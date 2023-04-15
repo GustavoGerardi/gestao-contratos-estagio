@@ -1,6 +1,9 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.User;
+import com.example.demo.dto.request.UserDataAccount;
+import com.example.demo.services.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +15,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-@RequestMapping("/api")
-public class TestController {
+@RequestMapping("account")
+public class AccountController {
+
 
     private final String UPLOAD_DIR = "/home/danilo/";
+
+    @Autowired
+    private AccountService accountService;
 
 
     @GetMapping()
@@ -26,6 +33,12 @@ public class TestController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping()
+    ResponseEntity<User> createAccount(@RequestBody UserDataAccount userDataAccount) throws Exception {
+        String response = this.accountService.createAccount(userDataAccount);
+        return ResponseEntity.ok(User.builder().build());
     }
 
     @PostMapping("/upload")
@@ -40,6 +53,6 @@ public class TestController {
 
         return ResponseEntity.ok("Arquivo enviado com sucesso e salvo em " + UPLOAD_DIR);
     }
-    
+
 
 }

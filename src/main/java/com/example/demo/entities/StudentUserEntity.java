@@ -1,14 +1,19 @@
 package com.example.demo.entities;
 
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 
-@Builder
 @Getter
-@Entity
+@Entity()
+@Table(name = "students")
 public class StudentUserEntity extends UserEntity {
-    private String ra;
+    private final String ra;
+
+    public StudentUserEntity(String name, String ra) {
+        super(name);
+        this.ra = ra;
+    }
 }

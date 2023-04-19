@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.dto.User;
 import com.example.demo.dto.request.UserDataAccount;
+import com.example.demo.entities.User;
 import com.example.demo.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 @RestController
 @RequestMapping("account")
 public class AccountController {
-
 
     private final String UPLOAD_DIR = "/home/danilo/";
 

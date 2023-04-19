@@ -7,10 +7,12 @@ import com.example.demo.entities.StudentUserEntity;
 import com.example.demo.entities.UserEntity;
 import com.example.demo.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.UUID;
 
+@Service
 public class AccountService {
 
     @Autowired
@@ -32,10 +34,10 @@ public class AccountService {
                 .id(UUID.randomUUID())
                 .email(userDataAccount.getEmail())
                 .password(userDataAccount.getPassword())
-                .userEntity(userEntity)
+                //.userEntity(userEntity)
                 .build();
 
-        AccountEntity accountCreated = this.accountRepository.save(accountEntity);
+        //AccountEntity accountCreated = accountRepository.save(accountEntity);
 
         return "Sucesso";
     }

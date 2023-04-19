@@ -1,13 +1,9 @@
 package com.example.demo.entities;
 
-import lombok.Getter;
+import jakarta.persistence.Table;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-
-@Getter
-@Entity()
+//@Getter
+//@Entity
 @Table(name = "students")
 public class StudentUserEntity extends UserEntity {
     private final String ra;

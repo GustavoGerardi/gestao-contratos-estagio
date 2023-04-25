@@ -4,7 +4,9 @@ import com.example.demo.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-public interface AccountRepository extends JpaRepository<User, Long> {
+public interface AccountRepository extends JpaRepository<User, UUID> {
 }
 

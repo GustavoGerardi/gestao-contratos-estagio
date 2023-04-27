@@ -17,7 +17,8 @@ public abstract class UserEntity {
     private UUID id;
     private final String name;
 
-    public UserEntity(String name) {
+    public UserEntity(UUID id, String name) {
+        this.id = id;
         this.name = name;
     }
 }

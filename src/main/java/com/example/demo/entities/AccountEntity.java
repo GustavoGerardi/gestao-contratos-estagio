@@ -1,21 +1,21 @@
 package com.example.demo.entities;
 
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.annotation.Id;
 
 import java.util.UUID;
 
 @Builder
 @Getter
-
+@Entity
 public class AccountEntity {
     @Id
     private UUID id;
 
-    //@JoinColumn(name = "userId")
-    //@OneToOne(fetch = FetchType.LAZY)
-    //private UserEntity userEntity;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 
     private String password;
 

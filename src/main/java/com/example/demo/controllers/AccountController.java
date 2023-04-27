@@ -1,12 +1,11 @@
 package com.example.demo.controllers;
 
-import com.example.demo.dto.request.UserDataAccount;
-import com.example.demo.entities.User;
-import com.example.demo.services.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,25 +19,25 @@ public class AccountController {
 
     private final String UPLOAD_DIR = "/home/danilo/";
 
-    @Autowired
-    private AccountService accountService;
+//    @Autowired
+//    private AccountService accountService;
 
 
-    @GetMapping()
-    public ResponseEntity<User> getUserById() {
-        User user = User.builder().build();
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping()
-    ResponseEntity<User> createAccount(@RequestBody UserDataAccount userDataAccount) throws Exception {
-        String response = this.accountService.createAccount(userDataAccount);
-        return ResponseEntity.ok(User.builder().build());
-    }
+//    @GetMapping()
+//    public ResponseEntity<User> getUserById() {
+//        User user = User.builder().build();
+//        if (user != null) {
+//            return ResponseEntity.ok(user);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @PostMapping()
+//    ResponseEntity<User> createAccount(@RequestBody UserDataAccount userDataAccount) throws Exception {
+//        //String response = this.accountService.createAccount(userDataAccount);
+//        return ResponseEntity.ok(User.builder().build());
+//    }
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestPart(value = "file") MultipartFile file) throws IOException, IOException {

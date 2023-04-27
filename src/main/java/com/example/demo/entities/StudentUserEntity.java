@@ -1,12 +1,21 @@
 package com.example.demo.entities;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
-//@Getter
-//@Entity
-@Table(name = "students")
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Entity
+@Table(name = "student-users")
 public class StudentUserEntity extends UserEntity {
-    private final String ra;
+    private String ra;
+
+    @OneToMany(mappedBy = "id")
+    private final List<Process> processes = new ArrayList<>();
 
     public StudentUserEntity(String name, String ra) {
         super(name);

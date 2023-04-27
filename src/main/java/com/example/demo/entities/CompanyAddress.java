@@ -14,11 +14,9 @@ public class CompanyAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private final Company company;
-
     private final String address;
+
+    private final Long number;
 
     private final String neighborhood;
 

@@ -1,7 +1,5 @@
 package com.example.demo.entities;
 
-import com.example.demo.enums.DocumentType;
-import com.example.demo.enums.ProcessStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,10 +25,10 @@ public class Process {
     private final List<Document> documents = new ArrayList<>();
 
     private final Long companyId;
+    
+    private final Long documentType;
 
-    private final DocumentType documentType;
-
-    private final ProcessStatus processStatus;
+    private final Long processStatus;
 
     private final LocalDate localDate;
 }

@@ -13,9 +13,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_address_id")
-    private final CompanyAddress companyAddress;
+    private final Long companyAddressId;
 
     private final String cnpj;
 
@@ -24,6 +22,6 @@ public class Company {
     private final String email;
 
     private final String businessName;
-    
+
     private final String partnershipNumber;
 }

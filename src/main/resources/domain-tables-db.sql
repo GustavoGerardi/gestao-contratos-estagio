@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS document_type (
+    id INT PRIMARY KEY,
+    type VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS process_status (
+    id INT PRIMARY KEY,
+    status VARCHAR(255) NOT NULL
+);
+

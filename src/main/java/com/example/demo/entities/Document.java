@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "documents")
 @Getter
@@ -21,5 +23,5 @@ public class Document {
 
     private final String url;
 
-    private final Long postDate;
+    private final LocalDate postDate;
 }

@@ -1,24 +1,24 @@
 package com.example.demo.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.Getter;
-
-import java.util.UUID;
 
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class UserEntity {
 
     @Id
-    private UUID id;
-    private final String name;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "", allocationSize = 1)
+    private Long id;
+    private String name;
 
-    public UserEntity(UUID id, String name) {
-        this.id = id;
+    public UserEntity(String name) {
         this.name = name;
     }
+
+    public UserEntity(){}
 }

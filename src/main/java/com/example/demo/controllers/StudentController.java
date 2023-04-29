@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("account")
-public class CreateStudentController {
+@RequestMapping("/account")
+public class StudentController {
 
     @Autowired
     private StudentService studentService;
@@ -22,11 +23,17 @@ public class CreateStudentController {
         return ResponseEntity.ok(account);
     }
     @GetMapping("/students/{id}")
-    public ResponseEntity<AccountEntity> getStudentById(@PathVariable UUID id) {
+    public ResponseEntity<AccountEntity> getStudentById(@PathVariable Long id) {
         AccountEntity student = studentService.getStudentById(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
+    }
+
+    @GetMapping("/students")
+    public ResponseEntity<List<AccountEntity>> getAllStudents() {
+        List<AccountEntity> students = studentService.getAllStudents();
+        return ResponseEntity.ok(students);
     }
 }

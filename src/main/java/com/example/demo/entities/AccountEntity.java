@@ -1,19 +1,21 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.UUID;
 
-@Builder
 @Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountEntity {
     @Id
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
 
-    @OneToOne(fetch = FetchType.LAZY)
+    private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
@@ -21,3 +23,4 @@ public class AccountEntity {
 
     private String email;
 }
+

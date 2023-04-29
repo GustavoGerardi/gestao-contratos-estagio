@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 public class Process {
     @Id
-    private final UUID id;
+    private final Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")

@@ -19,3 +19,16 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
     show-sql: true
+
+    spring:
+      mail:
+        host: smtp.fatec.sp.gov.br
+        port: 587
+        username: gutm86@gmail.com
+        password: 1645173red436gtc
+        properties:
+          mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true

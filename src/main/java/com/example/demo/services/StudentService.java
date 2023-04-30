@@ -30,7 +30,7 @@ public class StudentService {
         StudentUserEntity studentUser = new StudentUserEntity(userDataAccount.getName(), userDataAccount.getRa());
         String password = generateRandomPassword.generateRandomPassword();
 
-        userRepository.save(studentUser);
+//        userRepository.save(studentUser);
 
         AccountEntity account = new AccountEntity(studentUser.getId(), studentUser, password, userDataAccount.getEmail());
 

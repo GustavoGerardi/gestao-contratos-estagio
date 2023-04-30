@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Entity
-@Table(name = "companies")
 @Getter
 @Builder
+@Table(name = "TB_COMPANIES")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

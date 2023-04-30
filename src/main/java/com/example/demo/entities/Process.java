@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "process")
 @Getter
 @Builder
+@Table(name = "TB_PROCESS")
 public class Process {
     @Id
     private final Long id;

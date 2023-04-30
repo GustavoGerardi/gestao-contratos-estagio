@@ -3,7 +3,9 @@ package com.example.demo.controllers;
 import com.example.demo.dto.request.UserDataAccount;
 import com.example.demo.entities.AccountEntity;
 import com.example.demo.services.StudentService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +20,13 @@ public class StudentController {
     private StudentService studentService;
 
     @PostMapping("/student")
-    public ResponseEntity<AccountEntity> createStudent(@RequestBody UserDataAccount userDataAccount) {
-        AccountEntity account = studentService.createStudent(userDataAccount);
-        return ResponseEntity.ok(account);
+    public ResponseEntity<AccountEntity> createStudent(@RequestBody UserDataAccount userDataAccount) throws MessagingException {
+        try {
+            AccountEntity account = studentService.createStudent(userDataAccount);
+            return new ResponseEntity<>(account, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
     @GetMapping("/students/{id}")
     public ResponseEntity<AccountEntity> getStudentById(@PathVariable Long id) {

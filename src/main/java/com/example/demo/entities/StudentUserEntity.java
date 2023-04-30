@@ -17,7 +17,7 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "student-users")
+@Table(name = "TB_STUDENT")
 public class StudentUserEntity extends UserEntity {
     private String ra;
 

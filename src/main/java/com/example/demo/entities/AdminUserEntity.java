@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Entity
-@Table(name = "admin-users")
+@Table(name = "TB_ADMIN")
 public class AdminUserEntity extends UserEntity {
     private String collaboratorCode;
 

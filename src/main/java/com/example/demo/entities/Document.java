@@ -7,9 +7,9 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "documents")
 @Getter
 @Builder
+@Table(name = "TB_DOCUMENTS")
 public class Document {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

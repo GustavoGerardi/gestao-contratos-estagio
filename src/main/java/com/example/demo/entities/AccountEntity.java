@@ -1,14 +1,17 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import javax.validation.constraints.Email;
 
 @Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "TB_ACCOUNT")
 public class AccountEntity {
 
     @Id
@@ -21,6 +24,7 @@ public class AccountEntity {
 
     private String password;
 
+    @Column(unique = true)
     private String email;
 }
 

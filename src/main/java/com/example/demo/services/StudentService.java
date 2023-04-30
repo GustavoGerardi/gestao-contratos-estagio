@@ -1,11 +1,15 @@
 package com.example.demo.services;
 
+import com.example.demo.dto.request.EmailDto;
 import com.example.demo.dto.request.UserDataAccount;
 import com.example.demo.entities.AccountEntity;
 import com.example.demo.entities.StudentUserEntity;
+import com.example.demo.entities.UserEntity;
 import com.example.demo.repositories.AccountRepository;
+import com.example.demo.repositories.EmailRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.utils.GeneratePassword;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +29,21 @@ public class StudentService {
     @Autowired
     private EmailSenderService emailSender;
 
-    public AccountEntity createStudent(UserDataAccount userDataAccount) {
+    @Autowired
+    private EmailRepository emailRepository;
+
+    public AccountEntity createStudent(UserDataAccount userDataAccount) throws MessagingException {
+
+        if(accountRepository.findByEmail(userDataAccount.getEmail()) != null) throw new RuntimeException("Email already exists.");
 
         StudentUserEntity studentUser = new StudentUserEntity(userDataAccount.getName(), userDataAccount.getRa());
         String password = generateRandomPassword.generateRandomPassword();
 
-//        userRepository.save(studentUser);
-
         AccountEntity account = new AccountEntity(studentUser.getId(), studentUser, password, userDataAccount.getEmail());
 
-        emailSender.sendEmail(password);
+        EmailDto email = new EmailDto(userDataAccount.getName(), userDataAccount.getEmail(), password);
+
+        emailSender.sendEmail(email);
 
         return accountRepository.save(account);
     }

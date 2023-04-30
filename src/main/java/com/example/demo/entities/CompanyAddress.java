@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Entity
-@Table(name = "company-addresses")
 @Builder
 @Getter
+@Table(name = "TB_COMPANY_ADRESS")
 public class CompanyAddress {
 
     @Id

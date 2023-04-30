@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "TB_USERS")
 public abstract class UserEntity {
 
     @Id

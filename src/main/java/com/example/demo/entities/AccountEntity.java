@@ -5,20 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-
 @Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "TB_ACCOUNT")
 public class AccountEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 

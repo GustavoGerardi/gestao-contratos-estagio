@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class EmailEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long emailId;
 
     private String emailFrom;

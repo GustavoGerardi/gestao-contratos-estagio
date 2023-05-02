@@ -34,12 +34,12 @@ public class StudentController {
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
     @GetMapping("/students")
     public ResponseEntity<List<AccountEntity>> getAllStudents() {
         List<AccountEntity> students = studentService.getAllStudents();
-        return ResponseEntity.ok(students);
+        return new ResponseEntity<>(students, HttpStatus.OK);
     }
 }

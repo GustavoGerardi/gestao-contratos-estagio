@@ -16,7 +16,6 @@ public class AccountEntity {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 

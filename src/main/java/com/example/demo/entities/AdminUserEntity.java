@@ -10,7 +10,7 @@ import lombok.Getter;
 public class AdminUserEntity extends UserEntity {
     private String collaboratorCode;
 
-    public AdminUserEntity(Long id, String name, String collaboratorCode) {
+    public AdminUserEntity(String name, String collaboratorCode) {
         super(name);
         this.collaboratorCode = collaboratorCode;
     }

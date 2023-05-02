@@ -31,4 +31,4 @@ spring:
           starttls:
             enable: true
   profiles:
-    active: local
+    active: ${PROFILE}

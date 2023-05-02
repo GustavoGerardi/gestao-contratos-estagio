@@ -19,6 +19,10 @@ public class Document {
     @JoinColumn(name = "process_id")
     private final Process process;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "posted_by_user_id")
+    private final UserEntity postedBy;
+
     private final String name;
 
     private final String url;

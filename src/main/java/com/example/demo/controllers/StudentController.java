@@ -43,7 +43,7 @@ public class StudentController {
     }
 
     @PutMapping("/students/{id}/updatepassword")
-    public ResponseEntity<AccountEntity> updatePassword(@PathVariable Long id, @RequestParam String password) {
+    public ResponseEntity<AccountEntity> updatePassword(@PathVariable Long id,@RequestHeader("password") String password) {
         AccountEntity student = studentService.updatePassword(id, password);
         if (student == null) {
             return ResponseEntity.notFound().build();

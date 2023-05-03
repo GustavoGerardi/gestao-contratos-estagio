@@ -31,7 +31,7 @@ public class DocumentUploadValidation {
         //se user for student
         //se status for WAITING_FOR_STUDENT(sem upload ainda) ou WAITING_FOR_SECRETARY (já com o upload)
         // entao eu posso aceitar um upload aqui.
-        Boolean studentExists = studentService.studentUserExist(documentDtoRequest.getUserId());
+        Boolean studentExists = studentService.isStudentUser(documentDtoRequest.getUserId());
 
         if (studentExists && (processStatus.equals(ProcessStatus.WAITING_FOR_STUDENT.getValue()) ||
                 documentDtoRequest.getProcessId().equals(ProcessStatus.WAITING_FOR_SECRETARY.getValue()))
@@ -51,7 +51,7 @@ public class DocumentUploadValidation {
         //se user from admin
         // se status for IN_ANALYSIS
         // entao eu posso aceitar um upload aqui e mudar status para SENT
-        if (adminService.adminUserExist(documentDtoRequest.getUserId()) && processStatus
+        if (adminService.isAdminUser(documentDtoRequest.getUserId()) && processStatus
                 .equals(ProcessStatus.IN_ANALYSIS.getValue())) {
             processService.changeStatus(ProcessStatus.SENT);
             return true;

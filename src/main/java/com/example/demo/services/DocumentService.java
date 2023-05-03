@@ -9,6 +9,7 @@ import com.example.demo.repositories.UserRepository;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class DocumentService {
@@ -28,6 +30,14 @@ public class DocumentService {
 
     @Autowired
     DocumentUploadValidation documentUploadValidation;
+
+
+    @Autowired
+    StudentService studentService;
+
+
+    @Autowired
+    AdminService adminService;
 
     @Value("${bucket}")
     private String UPLOAD_DIR;
@@ -57,12 +67,21 @@ public class DocumentService {
 
     }
 
-//    @SneakyThrows
-//    public DocumentResponseDto downloadDocument(DocumentDtoRequest documentDtoRequest) {
-//        Document documentSaved = documentRepository.save(documentToSave);
-//
-//        return DocumentResponseDto.builder()
-//                .documentId(documentSaved.getId())
-//                .build();
-//    }
+    @SneakyThrows
+    public ByteArrayResource downloadDocument(DocumentDtoRequest documentDtoRequest) {
+        List<Document> docList = documentRepository
+                .findByProcess(ProcessEntity.builder().id(documentDtoRequest.getProcessId()).build());
+
+        int index = 0;
+
+        if (adminService.isAdminUser(documentDtoRequest.getUserId())) {
+            index = 1;
+        }
+
+        Path path = Paths.get(docList.get(index).getUrl());
+
+        byte[] pdf = Files.readAllBytes(path);
+
+        return new ByteArrayResource(pdf);
+    }
 }

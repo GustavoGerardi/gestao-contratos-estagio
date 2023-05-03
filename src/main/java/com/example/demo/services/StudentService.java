@@ -63,7 +63,7 @@ public class StudentService {
     }
 
     @SneakyThrows
-    public Boolean studentUserExist(Long id) {
+    public Boolean isStudentUser(Long id) {
         return Objects.nonNull(studentUserRepository.findById(id)
                 .orElseThrow(() -> new Exception("Student does not exist.")));
     }

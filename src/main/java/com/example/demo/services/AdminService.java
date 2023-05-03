@@ -14,7 +14,7 @@ public class AdminService {
     AdminUserRepository adminUserRepository;
 
     @SneakyThrows
-    public Boolean adminUserExist(Long id) {
+    public Boolean isAdminUser(Long id) {
         return Objects.nonNull(adminUserRepository.findById(id)
                 .orElseThrow(() -> new Exception("Admin user does not exist.")));
     }

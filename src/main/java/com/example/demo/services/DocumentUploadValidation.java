@@ -23,7 +23,7 @@ public class DocumentUploadValidation {
 
         Long processStatus = processService.getProcessStatus(documentDtoRequest.getProcessId());
 
-        //se processado estiver ABANDONED -> levantar erro
+        // se processado estiver ABANDONED -> levantar erro
         if (processStatus.equals(ProcessStatus.ABANDONED.getValue())) {
             throw new Exception("Não é mais possível fazer upload porque este processo foi abandonado.");
         }
@@ -50,9 +50,10 @@ public class DocumentUploadValidation {
 
         //se user from admin
         // se status for IN_ANALYSIS
-        // // entao eu posso aceitar um upload aqui e mudar status para SENT
+        // entao eu posso aceitar um upload aqui e mudar status para SENT
         if (adminService.adminUserExist(documentDtoRequest.getUserId()) && processStatus
                 .equals(ProcessStatus.IN_ANALYSIS.getValue())) {
+            processService.changeStatus(ProcessStatus.SENT);
             return true;
         }
 

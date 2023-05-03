@@ -5,7 +5,6 @@ import com.example.demo.dto.response.DocumentResponseDto;
 import com.example.demo.entities.Document;
 import com.example.demo.entities.ProcessEntity;
 import com.example.demo.repositories.DocumentRepository;
-import com.example.demo.repositories.ProcessRepository;
 import com.example.demo.repositories.UserRepository;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,7 @@ public class DocumentService {
     DocumentRepository documentRepository;
 
     @Autowired
-    ProcessRepository processRepository;
-
-    @Autowired
     UserRepository userRepository;
-
 
     @Autowired
     DocumentUploadValidation documentUploadValidation;

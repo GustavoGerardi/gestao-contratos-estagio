@@ -65,4 +65,10 @@ public class ProcessService {
 
         return process.getProcessStatus();
     }
+
+    public void changeStatus(ProcessStatus processStatus) {
+        processRepository.save(ProcessEntity.builder()
+                .processStatus(processStatus.getValue())
+                .build());
+    }
 }

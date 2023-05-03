@@ -30,27 +30,36 @@ public class DocumentService {
     @Autowired
     UserRepository userRepository;
 
+
+    @Autowired
+    DocumentUploadValidation documentUploadValidation;
+
     @Value("${bucket}")
     private String UPLOAD_DIR;
 
     @SneakyThrows
     public DocumentResponseDto uploadDocument(MultipartFile document, DocumentDtoRequest documentDtoRequest) {
-        String url = UPLOAD_DIR + document.getOriginalFilename();
-        Path dest = Paths.get(url);
-        Files.write(dest, document.getBytes());
+        if (documentUploadValidation.validateUpload(documentDtoRequest)) {
+            String url = UPLOAD_DIR + document.getOriginalFilename();
+            Path dest = Paths.get(url);
+            Files.write(dest, document.getBytes());
 
-        Document documentToSave = Document.builder()
-                .process(ProcessEntity.builder().id(documentDtoRequest.getProcessId()).build())
-                .postedBy(userRepository.getReferenceById(documentDtoRequest.getUserId()))
-                .postDate(LocalDate.now())
-                .url(url)
-                .build();
+            Document documentToSave = Document.builder()
+                    .process(ProcessEntity.builder().id(documentDtoRequest.getProcessId()).build())
+                    .postedBy(userRepository.getReferenceById(documentDtoRequest.getUserId()))
+                    .postDate(LocalDate.now())
+                    .url(url)
+                    .build();
 
-        Document documentSaved = documentRepository.save(documentToSave);
+            Document documentSaved = documentRepository.save(documentToSave);
 
-        return DocumentResponseDto.builder()
-                .documentId(documentSaved.getId())
-                .build();
+            return DocumentResponseDto.builder()
+                    .documentId(documentSaved.getId())
+                    .build();
+        }
+
+        throw new Exception("Upload não pôde ser realizado");
+
     }
 
 //    @SneakyThrows

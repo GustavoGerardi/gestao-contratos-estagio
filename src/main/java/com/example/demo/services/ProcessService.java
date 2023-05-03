@@ -7,6 +7,7 @@ import com.example.demo.enums.ProcessStatus;
 import com.example.demo.repositories.CompanyRepository;
 import com.example.demo.repositories.ProcessRepository;
 import com.example.demo.repositories.StudentUserRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class ProcessService {
                         processDtoRequest.getCompanyId() : null
                 )
                 .documentType(processDtoRequest.getDocumentType())
-                .processStatus(ProcessStatus.OPEN.getValue())
+                .processStatus(ProcessStatus.WAITING_FOR_STUDENT.getValue())
                 .localDate(LocalDate.now())
                 .build();
 
@@ -44,7 +45,7 @@ public class ProcessService {
         return ProcessResponseDto.builder()
                 .processId(processSaved.getId())
                 .userId(processDtoRequest.getStudentUserId())
-                .processStatus(ProcessStatus.OPEN)
+                .processStatus(ProcessStatus.WAITING_FOR_STUDENT)
                 .company(
                         Objects.nonNull(processDtoRequest.getCompanyId()) ?
                                 companyRepository
@@ -55,5 +56,13 @@ public class ProcessService {
                 )
                 .build();
 
+    }
+
+    @SneakyThrows
+    public Long getProcessStatus(Long id) {
+        ProcessEntity process = processRepository.findById(id)
+                .orElseThrow(() -> new Exception("Process não encontrado."));
+
+        return process.getProcessStatus();
     }
 }

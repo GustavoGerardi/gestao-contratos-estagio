@@ -4,17 +4,18 @@ import com.example.demo.dto.request.EmailDto;
 import com.example.demo.dto.request.UserDataAccount;
 import com.example.demo.entities.AccountEntity;
 import com.example.demo.entities.StudentUserEntity;
-import com.example.demo.entities.UserEntity;
 import com.example.demo.repositories.AccountRepository;
 import com.example.demo.repositories.EmailRepository;
+import com.example.demo.repositories.StudentUserRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.utils.GeneratePassword;
 import jakarta.mail.MessagingException;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
 
 @Service
 public class StudentService {
@@ -32,9 +33,14 @@ public class StudentService {
     @Autowired
     private EmailRepository emailRepository;
 
+
+    @Autowired
+    private StudentUserRepository studentUserRepository;
+
     public AccountEntity createStudent(UserDataAccount userDataAccount) throws MessagingException {
 
-        if(accountRepository.findByEmail(userDataAccount.getEmail()) != null) throw new RuntimeException("Email already exists.");
+        if (accountRepository.findByEmail(userDataAccount.getEmail()) != null)
+            throw new RuntimeException("Email already exists.");
 
         StudentUserEntity studentUser = new StudentUserEntity(userDataAccount.getName(), userDataAccount.getRa());
         String password = generateRandomPassword.generateRandomPassword();
@@ -54,5 +60,11 @@ public class StudentService {
 
     public List<AccountEntity> getAllStudents() {
         return accountRepository.findAll();
+    }
+
+    @SneakyThrows
+    public Boolean studentUserExist(Long id) {
+        return Objects.nonNull(studentUserRepository.findById(id)
+                .orElseThrow(() -> new Exception("Student does not exist.")));
     }
 }

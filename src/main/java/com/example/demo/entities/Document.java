@@ -17,14 +17,12 @@ public class Document {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "process_id")
-    private final Process process;
+    private final ProcessEntity process;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "posted_by_user_id")
     private final UserEntity postedBy;
-
-    private final String name;
-
+    
     private final String url;
 
     private final LocalDate postDate;

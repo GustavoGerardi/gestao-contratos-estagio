@@ -32,3 +32,4 @@ spring:
             enable: true
   profiles:
     active: ${PROFILE}
+bucket: ${DOCUMENT_STORING_FOLDER}

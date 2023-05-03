@@ -7,28 +7,28 @@ import lombok.Getter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Builder
 @Table(name = "TB_PROCESS")
-public class Process {
+public class ProcessEntity {
     @Id
-    private final Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
-    private final StudentUserEntity studentUserId;
+    private StudentUserEntity studentUserId;
 
     @OneToMany(mappedBy = "process")
     private final List<Document> documents = new ArrayList<>();
 
-    private final Long companyId;
-    
-    private final Long documentType;
+    private Long companyId;
 
-    private final Long processStatus;
+    private Long documentType;
 
-    private final LocalDate localDate;
+    private Long processStatus;
+
+    private LocalDate localDate;
 }

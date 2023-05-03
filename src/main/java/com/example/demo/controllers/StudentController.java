@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/account")
@@ -28,6 +27,7 @@ public class StudentController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+
     @GetMapping("/students/{id}")
     public ResponseEntity<AccountEntity> getStudentById(@PathVariable Long id) {
         AccountEntity student = studentService.getStudentById(id);

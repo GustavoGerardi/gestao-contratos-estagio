@@ -17,10 +17,13 @@ public class StudentUserEntity extends UserEntity {
     private String ra;
 
     @OneToMany(mappedBy = "id")
-    private final List<Process> processes = new ArrayList<>();
+    private final List<ProcessEntity> processes = new ArrayList<>();
 
     public StudentUserEntity(String name, String ra) {
         super(name);
         this.ra = ra;
+    }
+
+    public StudentUserEntity() {
     }
 }

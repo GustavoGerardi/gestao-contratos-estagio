@@ -48,7 +48,7 @@ public class StudentService {
 
         EmailDto email = new EmailDto(userDataAccount.getName(), userDataAccount.getEmail(), password);
 
-        emailSender.sendEmail(email);
+        //emailSender.sendEmail(email);
 
         return accountRepository.save(account);
     }

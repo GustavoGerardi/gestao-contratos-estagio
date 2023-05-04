@@ -20,7 +20,7 @@ public abstract class UserEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "postedBy")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "postedBy")
     private final List<Document> documents = new ArrayList<>();
 
     public UserEntity(String name) {

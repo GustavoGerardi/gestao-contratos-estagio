@@ -1,28 +1,35 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
-@Builder
 @Getter
-@Table(name = "TB_COMPANY_ADRESS")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "TB_COMPANY_ADDRESS")
 public class CompanyAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private Long id;
 
-    private final String address;
+    private String address;
 
-    private final Long number;
+    private String neighborhood;
 
-    private final String neighborhood;
+    private String cep;
 
-    private final String state;
+    private String city;
 
-    private final String cpf;
+    private String state;
 
-    private final String city;
+    public CompanyAddress(String address, String neighborhood, String cep, String city, String state) {
+        this.address = address;
+        this.neighborhood = neighborhood;
+        this.cep = cep;
+        this.city = city;
+        this.state = state;
+    }
 }

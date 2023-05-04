@@ -1,44 +1,63 @@
-//package com.example.demo.services;
-//
-//import com.example.demo.dto.request.UserDataAccount;
-//import com.example.demo.entities.AccountEntity;
-//import com.example.demo.entities.AdminUserEntity;
-//import com.example.demo.entities.StudentUserEntity;
-//import com.example.demo.entities.UserEntity;
-//import com.example.demo.repositories.AccountRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.Objects;
-//import java.util.UUID;
-//
-//@Service
-//public class AccountService {
-//
-//    @Autowired
-//    private AccountRepository accountRepository;
-//
-//    public String createAccount(UserDataAccount userDataAccount) throws Exception {
-//
-//        UserEntity userEntity;
-//
-//        if (Objects.isNull(userDataAccount.getRa()) && Objects.nonNull(userDataAccount.getCollaboratorCode())) {
-//            userEntity = new AdminUserEntity(userDataAccount.getName(), userDataAccount.getCollaboratorCode());
-//        } else if (Objects.isNull(userDataAccount.getCollaboratorCode()) && Objects.nonNull(userDataAccount.getRa())) {
-//            userEntity = new StudentUserEntity(userDataAccount.getName(), userDataAccount.getRa());
-//        } else {
-//            throw new Exception();
-//        }
-//
-//        AccountEntity accountEntity = AccountEntity.builder()
-//                .id(UUID.randomUUID())
-//                .email(userDataAccount.getEmail())
-//                .password(userDataAccount.getPassword())
-//                //.userEntity(userEntity)
-//                .build();
-//
-//        //AccountEntity accountCreated = accountRepository.save(accountEntity);
-//
-//        return "Sucesso";
-//    }
-//}
+package com.example.demo.services;
+
+import com.example.demo.dto.request.EmailDto;
+import com.example.demo.dto.request.UserDataAccount;
+import com.example.demo.entities.AccountEntity;
+import com.example.demo.entities.StudentUserEntity;
+import com.example.demo.repositories.AccountRepository;
+import com.example.demo.repositories.EmailRepository;
+import com.example.demo.repositories.UserRepository;
+import com.example.demo.utils.GeneratePassword;
+import jakarta.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class AccountService {
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    private GeneratePassword generateRandomPassword;
+    @Autowired
+    private EmailSenderService emailSender;
+
+    @Autowired
+    private EmailRepository emailRepository;
+
+    public AccountEntity createStudent(UserDataAccount userDataAccount) throws MessagingException {
+
+        if (accountRepository.findByEmail(userDataAccount.getEmail()) != null)
+            throw new RuntimeException("Email already exists.");
+
+        StudentUserEntity studentUser = new StudentUserEntity(userDataAccount.getName(), userDataAccount.getRa());
+        String password = generateRandomPassword.generateRandomPassword();
+
+        AccountEntity account = new AccountEntity(studentUser.getId(), studentUser, password, userDataAccount.getEmail());
+
+        EmailDto email = new EmailDto(userDataAccount.getName(), userDataAccount.getEmail(), password);
+
+        emailSender.sendEmail(email);
+
+        return accountRepository.save(account);
+    }
+
+    public AccountEntity getStudentById(Long id) {
+        return accountRepository.findById(id).get();
+    }
+
+    public List<AccountEntity> getAllStudents() {
+        return accountRepository.findAll();
+    }
+
+    public AccountEntity updatePassword(Long id, String password) {
+        AccountEntity account = accountRepository.findById(id).get();
+        account.setPassword(password);
+        return accountRepository.save(account);
+    }
+}

@@ -25,4 +25,9 @@ public class ProcessController {
     public ResponseEntity<String> updateProcess(@RequestParam Long processId) {
         return ResponseEntity.ok(processService.updateProcess(processId));
     }
+
+    @RequestMapping(path = "/wrong_doc", method = RequestMethod.HEAD)
+    public ResponseEntity<String> notifyWrongDocument(@RequestParam Long processId) {
+        return ResponseEntity.ok(processService.notifyStudentOfWrongDocument(processId));
+    }
 }

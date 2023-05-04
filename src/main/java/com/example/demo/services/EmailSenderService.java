@@ -46,7 +46,29 @@ public class EmailSenderService {
     }
 
     @Transactional
-    public void sendUpdateStatusEmail(String email) throws MessagingException {
+    public void sendUpdateStatusEmail(String email, String subject, String text) throws MessagingException {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("thamires.agnes12@gmail.com");
+        message.setTo(email);
+        message.setSubject(subject);
+        message.setText(text);
+
+        mailSender.send(message);
+
+        EmailEntity emailEntity = new EmailEntity();
+        emailEntity.setEmailFrom(message.getFrom());
+        emailEntity.setEmailTo(email);
+        emailEntity.setText(message.getText());
+        emailEntity.setSendDateEmail(LocalDateTime.now());
+        emailEntity.setStatusEmail(EmailStatus.SENT);
+        emailRepository.save(emailEntity);
+
+    }
+
+    @Transactional
+    public void sendEmailOfWrongDocument(String email) throws MessagingException {
 
         SimpleMailMessage message = new SimpleMailMessage();
 

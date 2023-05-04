@@ -69,7 +69,7 @@ public class ProcessService {
     @SneakyThrows
     public Long getProcessStatus(Long id) {
         ProcessEntity process = processRepository.findById(id)
-                .orElseThrow(() -> new Exception("Process não encontrado."));
+                .orElseThrow(() -> new Exception("Processo não encontrado."));
 
         return process.getProcessStatus();
     }
@@ -90,16 +90,28 @@ public class ProcessService {
 
     @SneakyThrows
     public String updateProcess(Long processId) {
-
-        Optional<ProcessEntity> process = processRepository.findById(processId);
-
-        if (process.isPresent()) {
-            String email = accountService.getStudentAccountById(process.get().getStudentUserId().getId()).getEmail();
-
-            emailSenderService.sendUpdateStatusEmail(email);
-        }
+        emailSenderService.sendUpdateStatusEmail(getStudentEmail(processId),
+                "Seu documento foi para ser assinado!",
+                "Seu documento está indo para a mesa do diretor para ser assinado"
+        );
 
         changeStatus(ProcessStatus.IN_ANALYSIS, processId);
         return "Sucesso";
+    }
+
+    @SneakyThrows
+    public String notifyStudentOfWrongDocument(Long processId) {
+        emailSenderService.sendEmailOfWrongDocument(getStudentEmail(processId));
+        return "Usuário notificado";
+    }
+
+    @SneakyThrows
+    public String getStudentEmail(Long processId) {
+        Optional<ProcessEntity> process = processRepository.findById(processId);
+
+        if (process.isPresent()) {
+            return accountService.getStudentAccountById(process.get().getStudentUserId().getId()).getEmail();
+        }
+        throw new Exception("Email não encontrado");
     }
 }

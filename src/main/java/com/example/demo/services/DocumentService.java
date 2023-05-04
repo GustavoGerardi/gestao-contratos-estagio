@@ -55,6 +55,8 @@ public class DocumentService {
     @SneakyThrows
     public DocumentResponseDto uploadDocument(MultipartFile document, DocumentDtoRequest documentDtoRequest) {
 
+        Long processStatus = processService.getProcessStatus(documentDtoRequest.getProcessId());
+
         String userType = "";
 
         if (adminService.isAdminUser(documentDtoRequest.getUserId())) {
@@ -63,11 +65,12 @@ public class DocumentService {
             userType = "STUDENT";
         }
 
-        if (documentUploadValidation.validateUpload(documentDtoRequest, userType)) {
+        if (documentUploadValidation.validateUpload(documentDtoRequest, userType, processStatus)) {
             String url = UPLOAD_DIR + document.getOriginalFilename();
             Path dest = Paths.get(url);
             Files.write(dest, document.getBytes());
-            
+
+            sendUpdateProcessStatusEmail(documentDtoRequest);
 
             Document documentToSave;
 
@@ -129,6 +132,19 @@ public class DocumentService {
                     documentDtoRequest.getUserId()).getId();
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    @SneakyThrows
+    private void sendUpdateProcessStatusEmail(DocumentDtoRequest documentDtoRequest) {
+        Long actualProcessStatus = processService.getProcessStatus(documentDtoRequest.getProcessId());
+
+        if (actualProcessStatus.equals(ProcessStatus.SENT.getValue())) {
+            emailSenderService.sendUpdateStatusEmail(
+                    processService.getStudentEmail(documentDtoRequest.getProcessId()),
+                    "Seu documento foi assinado!",
+                    "Olá! Seu documento foi assinado e pode ser baixado neste link..."
+            );
         }
     }
 }

@@ -19,8 +19,7 @@ public class DocumentUploadValidation {
     AdminService adminService;
 
     @SneakyThrows
-    public Boolean validateUpload(DocumentDtoRequest documentDtoRequest, String userType) {
-        Long processStatus = processService.getProcessStatus(documentDtoRequest.getProcessId());
+    public Boolean validateUpload(DocumentDtoRequest documentDtoRequest, String userType, Long processStatus) {
 
         if (processStatus.equals(ProcessStatus.ABANDONED.getValue())) {
             throw new Exception("Não é mais possível fazer upload porque este processo foi abandonado.");

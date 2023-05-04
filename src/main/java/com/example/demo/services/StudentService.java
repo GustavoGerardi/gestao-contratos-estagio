@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class StudentService {
@@ -64,7 +63,6 @@ public class StudentService {
 
     @SneakyThrows
     public Boolean isStudentUser(Long id) {
-        return Objects.nonNull(studentUserRepository.findById(id)
-                .orElseThrow(() -> new Exception("Student does not exist.")));
+        return studentUserRepository.findById(id).isPresent();
     }
 }

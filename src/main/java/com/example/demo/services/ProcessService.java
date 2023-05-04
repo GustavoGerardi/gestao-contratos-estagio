@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ProcessService {
@@ -66,9 +67,22 @@ public class ProcessService {
         return process.getProcessStatus();
     }
 
-    public void changeStatus(ProcessStatus processStatus) {
-        processRepository.save(ProcessEntity.builder()
+    public void changeStatus(ProcessStatus processStatus, Long processId) {
+
+        Optional<ProcessEntity> oldProcessEntity = processRepository.findById(processId);
+
+        oldProcessEntity.ifPresent(processEntity -> processRepository.save(ProcessEntity.builder()
+                .id(processId)
+                .studentUserId(oldProcessEntity.get().getStudentUserId())
+                .localDate(oldProcessEntity.get().getLocalDate())
+                .companyId(processEntity.getCompanyId())
+                .documentType(processEntity.getDocumentType())
                 .processStatus(processStatus.getValue())
-                .build());
+                .build()));
+    }
+
+    public String updateProcess(Long processId) {
+        changeStatus(ProcessStatus.IN_ANALYSIS, processId);
+        return "Sucesso";
     }
 }

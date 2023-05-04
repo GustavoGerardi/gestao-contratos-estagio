@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.request.DocumentDtoRequest;
 import com.example.demo.dto.response.DocumentResponseDto;
+import com.example.demo.enums.DocumentStatus;
 import com.example.demo.services.DocumentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -38,10 +39,11 @@ public class DocumentController {
         return ResponseEntity.ok(documentService.uploadDocument(document, dto));
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_PDF_VALUE)
     @SneakyThrows
-    public ResponseEntity<ByteArrayResource> downloadDocument(@RequestBody DocumentDtoRequest documentDtoRequest
-    ) {
-        return ResponseEntity.ok(documentService.downloadDocument(documentDtoRequest));
+    public ResponseEntity<ByteArrayResource> downloadDocument(
+            @RequestParam Long processId,
+            @RequestParam DocumentStatus documentStatus) {
+        return ResponseEntity.ok(documentService.downloadDocument(processId, documentStatus));
     }
 }

@@ -19,44 +19,48 @@ public class DocumentUploadValidation {
     AdminService adminService;
 
     @SneakyThrows
-    public Boolean validateUpload(DocumentDtoRequest documentDtoRequest) {
-
+    public Boolean validateUpload(DocumentDtoRequest documentDtoRequest, String userType) {
         Long processStatus = processService.getProcessStatus(documentDtoRequest.getProcessId());
 
-        // se processado estiver ABANDONED -> levantar erro
         if (processStatus.equals(ProcessStatus.ABANDONED.getValue())) {
             throw new Exception("Não é mais possível fazer upload porque este processo foi abandonado.");
         }
 
-        //se user for student
-        //se status for WAITING_FOR_STUDENT(sem upload ainda) ou WAITING_FOR_SECRETARY (já com o upload)
-        // entao eu posso aceitar um upload aqui.
-        Boolean studentExists = studentService.isStudentUser(documentDtoRequest.getUserId());
+        if (userType.equals("STUDENT")) {
+            return validateUploadByStudent(processStatus, documentDtoRequest);
+        }
 
-        if (studentExists && (processStatus.equals(ProcessStatus.WAITING_FOR_STUDENT.getValue()) ||
-                documentDtoRequest.getProcessId().equals(ProcessStatus.WAITING_FOR_SECRETARY.getValue()))
+        if (userType.equals("ADMIN")) {
+            return validateUploadByAdmin(processStatus, documentDtoRequest);
+        }
+
+        return false;
+    }
+
+    @SneakyThrows
+    private Boolean validateUploadByStudent(Long processStatus, DocumentDtoRequest documentDtoRequest) {
+        if (processStatus.equals(ProcessStatus.WAITING_FOR_STUDENT.getValue()) ||
+                processStatus.equals(ProcessStatus.WAITING_FOR_FATEC.getValue())
         ) {
+            processService.changeStatus(ProcessStatus.WAITING_FOR_FATEC, documentDtoRequest.getProcessId());
             return true;
         }
 
-        // se status for IN_ANALYSIS, SENT, FINISHED
-        // então levantar exceção (Não é mais possível fazer o upload do documento)
-        if (studentExists && (processStatus.equals(ProcessStatus.IN_ANALYSIS.getValue()) ||
+        if (processStatus.equals(ProcessStatus.IN_ANALYSIS.getValue()) ||
                 processStatus.equals(ProcessStatus.SENT.getValue()) ||
                 processStatus.equals(ProcessStatus.FINISHED.getValue())
-        )) {
+        ) {
             throw new Exception("Não é mais possível fazer upload do documento.");
         }
+        return false;
+    }
 
-        //se user from admin
-        // se status for IN_ANALYSIS
-        // entao eu posso aceitar um upload aqui e mudar status para SENT
+    private Boolean validateUploadByAdmin(Long processStatus, DocumentDtoRequest documentDtoRequest) {
         if (adminService.isAdminUser(documentDtoRequest.getUserId()) && processStatus
                 .equals(ProcessStatus.IN_ANALYSIS.getValue())) {
-            processService.changeStatus(ProcessStatus.SENT);
+            processService.changeStatus(ProcessStatus.SENT, documentDtoRequest.getProcessId());
             return true;
         }
-
-        throw new Exception("Nenhum status foi encontrado para este processo.");
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @Builder
 @Table(name = "TB_PROCESS")
+@AllArgsConstructor
 public class ProcessEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +33,8 @@ public class ProcessEntity {
     private Long processStatus;
 
     private LocalDate localDate;
+
+    public ProcessEntity() {
+
+    }
 }

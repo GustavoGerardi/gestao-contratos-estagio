@@ -5,8 +5,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class AdminService {
 
@@ -15,7 +13,6 @@ public class AdminService {
 
     @SneakyThrows
     public Boolean isAdminUser(Long id) {
-        return Objects.nonNull(adminUserRepository.findById(id)
-                .orElseThrow(() -> new Exception("Admin user does not exist.")));
+        return adminUserRepository.findById(id).isPresent();
     }
 }

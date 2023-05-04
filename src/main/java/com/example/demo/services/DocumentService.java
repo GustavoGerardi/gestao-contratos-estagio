@@ -46,6 +46,9 @@ public class DocumentService {
     @Autowired
     ProcessService processService;
 
+    @Autowired
+    EmailSenderService emailSenderService;
+
     @Value("${bucket}")
     private String UPLOAD_DIR;
 
@@ -60,11 +63,11 @@ public class DocumentService {
             userType = "STUDENT";
         }
 
-
         if (documentUploadValidation.validateUpload(documentDtoRequest, userType)) {
             String url = UPLOAD_DIR + document.getOriginalFilename();
             Path dest = Paths.get(url);
             Files.write(dest, document.getBytes());
+            
 
             Document documentToSave;
 
@@ -92,6 +95,7 @@ public class DocumentService {
             return DocumentResponseDto.builder()
                     .documentId(documentSaved.getId())
                     .build();
+
         }
 
         throw new Exception("Upload não pôde ser realizado");

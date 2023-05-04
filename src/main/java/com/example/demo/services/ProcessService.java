@@ -28,6 +28,13 @@ public class ProcessService {
     CompanyRepository companyRepository;
 
 
+    @Autowired
+    AccountService accountService;
+
+    @Autowired
+    EmailSenderService emailSenderService;
+
+
     public ProcessResponseDto createProcess(ProcessDtoRequest processDtoRequest) {
         ProcessEntity processEntity = ProcessEntity.builder()
                 .studentUserId(studentUserRepository
@@ -81,7 +88,17 @@ public class ProcessService {
                 .build()));
     }
 
+    @SneakyThrows
     public String updateProcess(Long processId) {
+
+        Optional<ProcessEntity> process = processRepository.findById(processId);
+
+        if (process.isPresent()) {
+            String email = accountService.getStudentAccountById(process.get().getStudentUserId().getId()).getEmail();
+
+            emailSenderService.sendUpdateStatusEmail(email);
+        }
+
         changeStatus(ProcessStatus.IN_ANALYSIS, processId);
         return "Sucesso";
     }

@@ -30,7 +30,7 @@ public class StudentController {
 
     @GetMapping("/students/{id}")
     public ResponseEntity<AccountEntity> getStudentById(@PathVariable Long id) {
-        AccountEntity student = studentService.getStudentById(id);
+        AccountEntity student = studentService.getStudentAccountById(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
@@ -39,12 +39,12 @@ public class StudentController {
 
     @GetMapping("/students")
     public ResponseEntity<List<AccountEntity>> getAllStudents() {
-        List<AccountEntity> students = studentService.getAllStudents();
+        List<AccountEntity> students = studentService.getAllStudentAccounts();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
     @PutMapping("/students/{id}/updatepassword")
-    public ResponseEntity<AccountEntity> updatePassword(@PathVariable Long id,@RequestHeader("password") String password) {
+    public ResponseEntity<AccountEntity> updatePassword(@PathVariable Long id, @RequestHeader("password") String password) {
         AccountEntity student = studentService.updatePassword(id, password);
         if (student == null) {
             return ResponseEntity.notFound().build();

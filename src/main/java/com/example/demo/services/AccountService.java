@@ -42,16 +42,16 @@ public class AccountService {
 
         EmailDto email = new EmailDto(userDataAccount.getName(), userDataAccount.getEmail(), password);
 
-        emailSender.sendEmail(email);
+        emailSender.sendAccountCreationEmail(email);
 
         return accountRepository.save(account);
     }
 
-    public AccountEntity getStudentById(Long id) {
+    public AccountEntity getStudentAccountById(Long id) {
         return accountRepository.findById(id).get();
     }
 
-    public List<AccountEntity> getAllStudents() {
+    public List<AccountEntity> getAllStudentAccounts() {
         return accountRepository.findAll();
     }
 

@@ -5,15 +5,12 @@ import com.example.demo.entities.EmailEntity;
 import com.example.demo.enums.EmailStatus;
 import com.example.demo.repositories.EmailRepository;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -26,7 +23,7 @@ public class EmailSenderService {
     private EmailRepository emailRepository;
 
     @Transactional
-    public void sendEmail(EmailDto emailDto) throws MessagingException {
+    public void sendAccountCreationEmail(EmailDto emailDto) throws MessagingException {
 
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -41,6 +38,28 @@ public class EmailSenderService {
         EmailEntity emailEntity = new EmailEntity();
         emailEntity.setEmailFrom(message.getFrom());
         emailEntity.setEmailTo(emailDto.getEmailTo());
+        emailEntity.setText(message.getText());
+        emailEntity.setSendDateEmail(LocalDateTime.now());
+        emailEntity.setStatusEmail(EmailStatus.SENT);
+        emailRepository.save(emailEntity);
+
+    }
+
+    @Transactional
+    public void sendUpdateStatusEmail(String email) throws MessagingException {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("thamires.agnes12@gmail.com");
+        message.setTo(email);
+        message.setSubject("Seu documento foi para ser assinado!");
+        message.setText("Seu documento está indo para a mesa do diretor para ser assinado");
+
+        mailSender.send(message);
+
+        EmailEntity emailEntity = new EmailEntity();
+        emailEntity.setEmailFrom(message.getFrom());
+        emailEntity.setEmailTo(email);
         emailEntity.setText(message.getText());
         emailEntity.setSendDateEmail(LocalDateTime.now());
         emailEntity.setStatusEmail(EmailStatus.SENT);

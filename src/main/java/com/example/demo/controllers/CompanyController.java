@@ -1,10 +1,8 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.request.CompanyData;
-import com.example.demo.entities.AccountEntity;
 import com.example.demo.entities.CompanyEntity;
 import com.example.demo.services.CompanyService;
-import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

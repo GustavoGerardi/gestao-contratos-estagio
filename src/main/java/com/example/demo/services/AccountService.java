@@ -48,7 +48,7 @@ public class AccountService {
     }
 
     public AccountEntity getStudentAccountById(Long id) {
-        return accountRepository.findById(id).get();
+        return accountRepository.findByUserId(id);
     }
 
     public List<AccountEntity> getAllStudentAccounts() {

@@ -74,8 +74,8 @@ public class EmailSenderService {
 
         message.setFrom("thamires.agnes12@gmail.com");
         message.setTo(email);
-        message.setSubject("Seu documento foi para ser assinado!");
-        message.setText("Seu documento está indo para a mesa do diretor para ser assinado");
+        message.setSubject("Seu documento foi invalidado");
+        message.setText("Seu documento foi recusado pela FATEC devido a inconsistências.");
 
         mailSender.send(message);
 

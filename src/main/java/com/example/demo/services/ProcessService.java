@@ -110,7 +110,7 @@ public class ProcessService {
         Optional<ProcessEntity> process = processRepository.findById(processId);
 
         if (process.isPresent()) {
-            return accountService.getStudentAccountById(process.get().getStudentUserId().getId()).getEmail();
+            return accountService.getStudentAccountByRa(process.get().getStudentUserId().getRa()).getEmail();
         }
         throw new Exception("Email não encontrado");
     }

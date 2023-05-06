@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.request.UserDataAccount;
 import com.example.demo.entities.AccountEntity;
+import com.example.demo.entities.StudentUserEntity;
 import com.example.demo.services.AccountService;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,24 +29,24 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/students/{id}")
-    public ResponseEntity<AccountEntity> getStudentById(@PathVariable Long id) {
-        AccountEntity student = studentService.getStudentAccountById(id);
+    @GetMapping("/students/{ra}")
+    public ResponseEntity<AccountEntity> getStudentByRa(@PathVariable String ra) {
+        AccountEntity student = studentService.getStudentAccountByRa(ra);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-    @GetMapping("/students")
+    @GetMapping("/accounts")
     public ResponseEntity<List<AccountEntity>> getAllStudents() {
         List<AccountEntity> students = studentService.getAllStudentAccounts();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
-    @PutMapping("/students/{id}/updatepassword")
-    public ResponseEntity<AccountEntity> updatePassword(@PathVariable Long id, @RequestHeader("password") String password) {
-        AccountEntity student = studentService.updatePassword(id, password);
+    @PutMapping("/students/{ra}/updatepassword")
+    public ResponseEntity<AccountEntity> updatePassword(@PathVariable String ra, @RequestHeader("password") String password) {
+        AccountEntity student = studentService.updatePassword(ra, password);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
